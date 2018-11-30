@@ -139,7 +139,7 @@ namespace PokerHand
         public int Straight
         {
             get
-            {
+            { 
                 SortCards();
                 var isStraight = true;
                 for (int i = 0; i < Cards.Count - 1; i++)
