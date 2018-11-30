@@ -91,23 +91,23 @@ namespace PokerHand
         {
             var cardPlay = new CardPlay();
             cardPlay.SetSuitAndValue(cardGameString);
-            lock (_lockAvailableCards)
-            {
-                cardPlay = AvailableCards.FirstOrDefault(c => c.Suit == cardPlay.Suit && c.Value == cardPlay.Value);
-                if (cardPlay != null)
-                    AvailableCards.Remove(cardPlay);
-            }
+            //lock (_lockAvailableCards)
+            //{
+            //    cardPlay = AvailableCards.FirstOrDefault(c => c.Suit == cardPlay.Suit && c.Value == cardPlay.Value);
+            //    if (cardPlay != null)
+            //        AvailableCards.Remove(cardPlay);
+            //}
             return cardPlay;
         }
 
         public void ClearSelectedCards(List<CardPlay> cards)
         {
-            if (!cards.Any())
-                return;
-            lock (_lockAvailableCards)
-            {
-                AvailableCards.AddRange(cards);
-            }
+            //if (!cards.Any())
+            //    return;
+            //lock (_lockAvailableCards)
+            //{
+            //    AvailableCards.AddRange(cards);
+            //}
             cards.Clear();
         }
     }

@@ -48,7 +48,7 @@ namespace PokerHand
                     Suit = CardPlaySuit.Spade;
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException("The card suit is unkown. please use one of this suits H for Heary, D for Diamond, C for Club, S for Spade");
+                    throw new ArgumentOutOfRangeException("The card suit is unkown. please use one of this suits H for Heart, D for Diamond, C for Club, S for Spade");
             }
         }
 

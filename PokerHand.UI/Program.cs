@@ -16,6 +16,7 @@ namespace PokerHand.UI
             int playerCount;
             while (!int.TryParse(Console.ReadLine(), out playerCount) || playerCount > 5 || playerCount < 2)
             {
+                Console.WriteLine("Invalid Data!");
                 Console.WriteLine("Please enter player counts a number between 2 to 5...");
             }
             Console.WriteLine($"{playerCount} Players added.");
@@ -67,6 +68,7 @@ namespace PokerHand.UI
             List<string> inputCards = input.Split(' ').ToList();
             if (inputCards.Count < 5)
             {
+                Console.WriteLine("Invalid Data!");
                 Console.WriteLine("Please enter 5 cards seperated by Space Key");
                 return false;
             }
@@ -78,6 +80,7 @@ namespace PokerHand.UI
                     var cardPlay = Game.Instance.GetCardPlay(inputCards[i]);
                     if (cardPlay == null)
                     {
+                        Console.WriteLine("Invalid Data!");
                         Console.WriteLine($"{inputCards[i]} is selected before. select another card.");
                         return false;
                     }
