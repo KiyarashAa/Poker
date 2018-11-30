@@ -30,9 +30,9 @@ namespace PokerHand.UI
             {
                 foreach (var item in players)
                 {
-                    Console.WriteLine($"Write 5 cards to add for {item.Name}. Use Space key to seperate them. ex 8S 5D 10H JH QH");
                     while (true)
                     {
+                        Console.WriteLine($"Write 5 cards to add for '{item.Name.ToUpper()}'. Use Space key to seperate them. ex 8S 5D 10H JH QH");
                         var input = Console.ReadLine();
                         if (AddInputToCardList(input, item.Cards))
                             break;
