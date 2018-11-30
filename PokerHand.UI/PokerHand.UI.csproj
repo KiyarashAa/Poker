@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3BB025DF-43E4-45F3-BC94-2E3956594F09}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>PokerHand</RootNamespace>
-    <AssemblyName>PokerHand</AssemblyName>
+    <ProjectGuid>{8B94C183-B0FA-47BE-8CC4-4ADC8AA6D927}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>PokerHand.UI</RootNamespace>
+    <AssemblyName>PokerHand.UI</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -32,9 +32,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -46,18 +43,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CardPlay.cs" />
-    <Compile Include="Enums\CardPlaySign.cs" />
-    <Compile Include="Extenstions\EnumExtensions.cs" />
-    <Compile Include="Game.cs" />
-    <Compile Include="Interfaces\ICardPlay.cs" />
-    <Compile Include="Player.cs" />
-    <Compile Include="PlayerCollection.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PokerHand\PokerHand.csproj">
+      <Project>{3bb025df-43e4-45f3-bc94-2e3956594f09}</Project>
+      <Name>PokerHand</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

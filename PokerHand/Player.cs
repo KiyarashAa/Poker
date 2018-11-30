@@ -28,16 +28,46 @@ namespace PokerHand
             if (player == null)
                 throw new ArgumentException("Object is not a Player.");
             int result;
+            if (this.RoyalFlush > 0 || player.RoyalFlush > 0)
+            {
+                result = player.RoyalFlush.CompareTo(RoyalFlush);//Descending
+                return result == 0 ? WhoIsWinnerInSameHand(player) : result;
+            }
+            if (this.StraightFlush > 0 || player.StraightFlush > 0)
+            {
+                result = player.StraightFlush.CompareTo(StraightFlush);//Descending
+                return result == 0 ? WhoIsWinnerInSameHand(player) : result;
+            }
+            if (this.FourOfKind > 0 || player.FourOfKind > 0)
+            {
+                result = player.FourOfKind.CompareTo(FourOfKind);//Descending
+                return result == 0 ? WhoIsWinnerInSameHand(player) : result;
+            }
+            if (this.FullHouse > 0 || player.FullHouse > 0)
+            {
+                result = player.FullHouse.CompareTo(FullHouse);//Descending
+                return result == 0 ? WhoIsWinnerInSameHand(player) : result;
+            }
             if (this.Flush > 0 || player.Flush > 0)
             {
                 result = player.Flush.CompareTo(Flush);//Descending
                 return result == 0 ? WhoIsWinnerInSameHand(player) : result;
             }
-            if(ThreeOfKind > 0 || player.ThreeOfKind > 0)
+            if (this.Straight > 0 || player.Straight > 0)
+            {
+                result = player.Straight.CompareTo(Straight);//Descending
+                return result == 0 ? WhoIsWinnerInSameHand(player) : result;
+            }
+            if (ThreeOfKind > 0 || player.ThreeOfKind > 0)
             {
                 return player.ThreeOfKind.CompareTo(ThreeOfKind);//Descending
             }
-            if(OnePair > 0 || player.OnePair > 0)
+            if (TwoPair > 0 || player.TwoPair > 0)
+            {
+                result = player.TwoPair.CompareTo(TwoPair);//Descending
+                return result == 0 ? WhoIsWinnerInSameHand(player) : result;
+            }
+            if (OnePair > 0 || player.OnePair > 0)
             {
                 result = player.OnePair.CompareTo(OnePair);//Descending
                 return result == 0 ? WhoIsWinnerInSameHand(player) : result;
@@ -59,6 +89,31 @@ namespace PokerHand
             }
             return 0;
         }
+        public int RoyalFlush
+        {
+            get
+            {
+                if (StraightFlush != 0)
+                {
+                    Cards.Sort();
+                    if (Cards.First().Value == 14)
+                        return 14;
+                }
+                return 0;
+            }
+        }
+        public int StraightFlush
+        {
+            get
+            {
+                if (Flush != 0)
+                {
+                    if (Cards.First().Value - Cards.Last().Value == 4)
+                        return Cards.First().Value;
+                }
+                return 0;
+            }
+        }
         public int Flush
         {
             get
@@ -71,21 +126,45 @@ namespace PokerHand
                 return 0;
             }
         }
+        public int Straight
+        {
+            get
+            {
+                if (Cards.First().Value - Cards.Last().Value == 4)
+                    return Cards.First().Value;
+                return 0;
+            }
+
+        }
+        public int FourOfKind
+        {
+            get
+            {
+                return GetNumberOfKind(4);
+            }
+
+        }
         public int ThreeOfKind
         {
             get
             {
-                var list = from l in Cards
-                           group l.Value by l.Value into g
-                           let count = g.Count()
-                           orderby count descending
-                           select new
-                           {
-                               Count = count,
-                               Value = g.Key
-                           };
-                if (list.First().Count >= 3)//First item is highest
-                    return list.First().Value;
+                return GetNumberOfKind(3);
+            }
+        }
+        public int TwoPair
+        {
+            get
+            {
+                var highPair = GetNumberOfKind(2, out int lowPair);
+                return highPair * 100 + lowPair;
+            }
+        }
+        public int FullHouse
+        {
+            get
+            {
+                if (ThreeOfKind != 0 && OnePair != 0)
+                    return ThreeOfKind * 100 + OnePair;
                 return 0;
             }
         }
@@ -93,18 +172,7 @@ namespace PokerHand
         {
             get
             {
-                var list = from l in Cards
-                           group l.Value by l.Value into g
-                           let count = g.Count()
-                           orderby count descending
-                           select new
-                           {
-                               Count = count,
-                               Value = g.Key
-                           };
-                if (list.First().Count == 2)
-                    return list.First().Value;
-                return 0;
+                return GetNumberOfKind(2);
             }
         }
         public int HighCard
@@ -114,6 +182,30 @@ namespace PokerHand
                 Cards.Sort();
                 return Cards.First().Value;//First one is High Card
             }
+        }
+        private int GetNumberOfKind(int number)
+        {
+            return GetNumberOfKind(number, out int lowPair);
+        }
+        private int GetNumberOfKind(int number, out int lowPair)
+        {
+            lowPair = 0;
+            var list = from l in Cards
+                       group l.Value by l.Value into g
+                       let count = g.Count()
+                       orderby count descending
+                       select new
+                       {
+                           Count = count,
+                           Value = g.Key
+                       };
+            if (list.ToArray()[1].Value == 2)
+            {
+                lowPair = list.ToArray()[1].Value;
+            }
+            if (list.First().Count == number)//First item is highest
+                return list.First().Value;
+            return 0;
         }
     }
 }

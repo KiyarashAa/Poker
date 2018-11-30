@@ -14,20 +14,19 @@ namespace PokerHand.Tests
         [Fact]
         public void ThereIsNoDuplicatedCard()
         {
-            lock (Game.Instance.AvailableCards)
-            {
-                var expected = Game.Instance.AvailableCards.Count;
-                var actual = (from card in Game.Instance.AvailableCards
-                              group card by new { card.Value, card.Suit } into g
-                              let count = g.Count()
-                              orderby count descending
-                              select new
-                              {
-                                  Count = count,
-                                  Key = g.Key
-                              }).Count();
-                Xunit.Assert.Equal(expected, actual);
-            }
+            var availableCards = Game.Instance.AvailableCards;
+            Game.Instance.Dispose();
+            var expected = 1;
+            var actual = (from card in availableCards
+                          group card by new { card.Value, card.Suit } into g
+                          let count = g.Count()
+                          orderby count descending
+                          select new
+                          {
+                              Count = count,
+                              Key = g.Key
+                          }).First().Count;
+            Xunit.Assert.Equal(expected, actual);
         }
     }
 }

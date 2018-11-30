@@ -10,6 +10,13 @@ namespace PokerHand
 {
     public class Game
     {
+        public void Dispose()
+        {
+            lock (_lock)
+            {
+                _instance = null;
+            }
+        }
         private Game()
         {
             var cards = new List<CardPlay>();
