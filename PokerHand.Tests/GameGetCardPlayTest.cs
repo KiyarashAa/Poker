@@ -8,7 +8,7 @@ namespace PokerHand.Tests
     [TestClass]
     public class GameGetCardPlayTest
     {
-        //[Fact]
+        [Fact]
         public void PreventToGetSameCard()
         {
             var cardPlay1 = Game.Instance.GetCardPlay("7S");

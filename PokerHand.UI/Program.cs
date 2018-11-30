@@ -12,14 +12,14 @@ namespace PokerHand.UI
         {
             var players = new List<Player>();
             Game.Instance.Players = players;
-            Console.WriteLine("Please enter player counts a number between 2 to 5...");
+            Console.WriteLine("Please enter the number of players, it should be between 2 to 5...");
             int playerCount;
             while (!int.TryParse(Console.ReadLine(), out playerCount) || playerCount > 5 || playerCount < 2)
             {
                 Console.WriteLine("Invalid Data!");
-                Console.WriteLine("Please enter player counts a number between 2 to 5...");
+                Console.WriteLine("Please enter the number of players, it should be between 2 to 5...");
             }
-            Console.WriteLine($"{playerCount} Players added.");
+            Console.WriteLine($"{playerCount} Players are added.");
             for (int i = 0; i < playerCount; i++)
             {
                 Console.WriteLine($"Please enter player {i + 1}'s name...");
@@ -56,7 +56,7 @@ namespace PokerHand.UI
             }
             foreach (var item in Game.Instance.Winners)
             {
-                Console.WriteLine($"{item.Name} is winner.");
+                Console.WriteLine($"{item.Name} wins.");
             }
             Console.ReadLine();
         }
@@ -81,7 +81,7 @@ namespace PokerHand.UI
                     if (cardPlay == null)
                     {
                         Console.WriteLine("Invalid Data!");
-                        Console.WriteLine($"{inputCards[i]} is selected before. select another card.");
+                        Console.WriteLine($"{inputCards[i]} has been selected before. Choose another card.");
                         return false;
                     }
                     cards.Add(cardPlay);

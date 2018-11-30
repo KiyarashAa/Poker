@@ -9,7 +9,7 @@ namespace PokerHand.Tests
     [TestClass]
     public class GameClearSelectedCardsTest
     {
-        //[Fact]
+        [Fact]
         public void CardsWillAddedToAvailableList()
         {
             var c1 = Game.Instance.GetCardPlay("2C");
@@ -30,7 +30,7 @@ namespace PokerHand.Tests
             Xunit.Assert.Contains(Game.Instance.AvailableCards, c => c == c4);
         }
 
-        //[Fact]
+        [Fact]
         public void CardsWillCleared()
         {
             var c1 = Game.Instance.GetCardPlay("2C");
