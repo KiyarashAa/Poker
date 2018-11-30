@@ -70,8 +70,187 @@ namespace PokerHand.Tests
             var actual = winner.CompareTo(loser);
             Xunit.Assert.Equal(expected, actual);
         }
+
         [Fact]
-        public void CompareToThreeOfKindWinsOnePair()
+        public void CompareToRoyalFlushWinsStraightFlush()
+        {
+            var winner = new Player("Winner")
+            {
+                Cards = new List<CardPlay>
+                {
+                    new CardPlay(10,CardPlaySuit.Club),
+                    new CardPlay(14,CardPlaySuit.Club),
+                    new CardPlay(12,CardPlaySuit.Club),
+                    new CardPlay(13,CardPlaySuit.Club),
+                    new CardPlay(11,CardPlaySuit.Club),
+                }
+            };
+            var loser = new Player("Loser")
+            {
+                Cards = new List<CardPlay>
+                {
+                    new CardPlay(13,CardPlaySuit.Diamond),
+                    new CardPlay(10,CardPlaySuit.Diamond),
+                    new CardPlay(11,CardPlaySuit.Diamond),
+                    new CardPlay(12,CardPlaySuit.Diamond),
+                    new CardPlay(9,CardPlaySuit.Diamond),
+                }
+            };
+            var expected = -1;
+            var actual = winner.CompareTo(loser);
+            Xunit.Assert.Equal(expected, actual);
+        }
+        [Fact]
+        public void CompareToStraightFlushWinsFourOfKind()
+        {
+            var winner = new Player("Winner")
+            {
+                Cards = new List<CardPlay>
+                {
+                    new CardPlay(13,CardPlaySuit.Diamond),
+                    new CardPlay(10,CardPlaySuit.Diamond),
+                    new CardPlay(11,CardPlaySuit.Diamond),
+                    new CardPlay(12,CardPlaySuit.Diamond),
+                    new CardPlay(9,CardPlaySuit.Diamond),
+                }
+            };
+            var loser = new Player("Loser")
+            {
+                Cards = new List<CardPlay>
+                {
+                    new CardPlay(14,CardPlaySuit.Club),
+                    new CardPlay(14,CardPlaySuit.Diamond),
+                    new CardPlay(14,CardPlaySuit.Heart),
+                    new CardPlay(14,CardPlaySuit.Spade),
+                    new CardPlay(9,CardPlaySuit.Spade),
+                }
+            };
+            var expected = -1;
+            var actual = winner.CompareTo(loser);
+            Xunit.Assert.Equal(expected, actual);
+        }
+        [Fact]
+        public void CompareToFourOfKindWinsFullHouse()
+        {
+            var winner = new Player("Winner")
+            {
+                Cards = new List<CardPlay>
+                {
+                    new CardPlay(2,CardPlaySuit.Club),
+                    new CardPlay(2,CardPlaySuit.Diamond),
+                    new CardPlay(2,CardPlaySuit.Heart),
+                    new CardPlay(2,CardPlaySuit.Spade),
+                    new CardPlay(9,CardPlaySuit.Spade),
+                }
+            };
+            var loser = new Player("Loser")
+            {
+                Cards = new List<CardPlay>
+                {
+                    new CardPlay(14,CardPlaySuit.Club),
+                    new CardPlay(14,CardPlaySuit.Diamond),
+                    new CardPlay(14,CardPlaySuit.Heart),
+                    new CardPlay(13,CardPlaySuit.Spade),
+                    new CardPlay(13,CardPlaySuit.Heart),
+                }
+            };
+            var expected = -1;
+            var actual = winner.CompareTo(loser);
+            Xunit.Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void CompareToFullHouseWinsFlush()
+        {
+            var winner = new Player("Winner")
+            {
+                Cards = new List<CardPlay>
+                {
+                    new CardPlay(14,CardPlaySuit.Club),
+                    new CardPlay(14,CardPlaySuit.Diamond),
+                    new CardPlay(14,CardPlaySuit.Heart),
+                    new CardPlay(13,CardPlaySuit.Spade),
+                    new CardPlay(13,CardPlaySuit.Heart),
+                }
+            };
+            var loser = new Player("Loser")
+            {
+                Cards = new List<CardPlay>
+                {
+                    new CardPlay(8,CardPlaySuit.Club),
+                    new CardPlay(6,CardPlaySuit.Club),
+                    new CardPlay(5,CardPlaySuit.Club),
+                    new CardPlay(13,CardPlaySuit.Club),
+                    new CardPlay(3,CardPlaySuit.Club),
+                }
+            };
+            var expected = -1;
+            var actual = winner.CompareTo(loser);
+            Xunit.Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void CompareToFlushWinsStraight()
+        {
+            var winner = new Player("Winner")
+            {
+                Cards = new List<CardPlay>
+                {
+                    new CardPlay(8,CardPlaySuit.Club),
+                    new CardPlay(6,CardPlaySuit.Club),
+                    new CardPlay(5,CardPlaySuit.Club),
+                    new CardPlay(13,CardPlaySuit.Club),
+                    new CardPlay(3,CardPlaySuit.Club),
+                }
+            };
+            var loser = new Player("Loser")
+            {
+                Cards = new List<CardPlay>
+                {
+                    new CardPlay(14,CardPlaySuit.Club),
+                    new CardPlay(13,CardPlaySuit.Diamond),
+                    new CardPlay(12,CardPlaySuit.Heart),
+                    new CardPlay(11,CardPlaySuit.Club),
+                    new CardPlay(10,CardPlaySuit.Club),
+                }
+            };
+            var expected = -1;
+            var actual = winner.CompareTo(loser);
+            Xunit.Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void CompareToStraightWinsThreeOfKind()
+        {
+            var winner = new Player("Winner")
+            {
+                Cards = new List<CardPlay>
+                {
+                    new CardPlay(14,CardPlaySuit.Club),
+                    new CardPlay(13,CardPlaySuit.Diamond),
+                    new CardPlay(12,CardPlaySuit.Heart),
+                    new CardPlay(11,CardPlaySuit.Club),
+                    new CardPlay(10,CardPlaySuit.Club),
+                }
+            };
+            var loser = new Player("Loser")
+            {
+                Cards = new List<CardPlay>
+                {
+                    new CardPlay(14,CardPlaySuit.Club),
+                    new CardPlay(14,CardPlaySuit.Diamond),
+                    new CardPlay(14,CardPlaySuit.Heart),
+                    new CardPlay(11,CardPlaySuit.Club),
+                    new CardPlay(10,CardPlaySuit.Club),
+                }
+            };
+            var expected = -1;
+            var actual = winner.CompareTo(loser);
+            Xunit.Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void CompareToThreeOfKindWinsTwoPair()
         {
             var winner = new Player("Winner")
             {
@@ -91,7 +270,7 @@ namespace PokerHand.Tests
                     new CardPlay(14,CardPlaySuit.Club),
                     new CardPlay(14,CardPlaySuit.Heart),
                     new CardPlay(13,CardPlaySuit.Diamond),
-                    new CardPlay(9,CardPlaySuit.Club),
+                    new CardPlay(13,CardPlaySuit.Club),
                     new CardPlay(2,CardPlaySuit.Club),
                 }
             };
@@ -99,6 +278,37 @@ namespace PokerHand.Tests
             var actual = winner.CompareTo(loser);
             Xunit.Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public void CompareToTwoPairWinsOnePair()
+        {
+            var winner = new Player("Winner")
+            {
+                Cards = new List<CardPlay>
+                {
+                    new CardPlay(5,CardPlaySuit.Club),
+                    new CardPlay(5,CardPlaySuit.Heart),
+                    new CardPlay(13,CardPlaySuit.Diamond),
+                    new CardPlay(13,CardPlaySuit.Club),
+                    new CardPlay(2,CardPlaySuit.Club),
+                }
+            };
+            var loser = new Player("Loser")
+            {
+                Cards = new List<CardPlay>
+                {
+                    new CardPlay(14,CardPlaySuit.Club),
+                    new CardPlay(14,CardPlaySuit.Heart),
+                    new CardPlay(10,CardPlaySuit.Diamond),
+                    new CardPlay(13,CardPlaySuit.Club),
+                    new CardPlay(2,CardPlaySuit.Club),
+                }
+            };
+            var expected = -1;
+            var actual = winner.CompareTo(loser);
+            Xunit.Assert.Equal(expected, actual);
+        }
+
         [Fact]
         public void CompareToOnePairWinsHighCards()
         {

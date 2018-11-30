@@ -18,8 +18,16 @@ namespace PokerHand
         }
 
         public string Name { get; set; }
+        private bool isCardsSorted = false;
         public List<CardPlay> Cards { get; set; }
-
+        public void SortCards()
+        {
+            if (isCardsSorted)
+                return;
+            if (Cards.Count == 5)
+                isCardsSorted = true;
+            Cards.Sort();
+        }
         public int CompareTo(object obj)
         {
             if (obj == null)
@@ -28,6 +36,8 @@ namespace PokerHand
             if (player == null)
                 throw new ArgumentException("Object is not a Player.");
             int result;
+            SortCards();
+            player.SortCards();
             if (this.RoyalFlush > 0 || player.RoyalFlush > 0)
             {
                 result = player.RoyalFlush.CompareTo(RoyalFlush);//Descending
@@ -77,8 +87,7 @@ namespace PokerHand
         }
         private int WhoIsWinnerInSameHand(Player player)
         {
-            Cards.Sort();
-            player.Cards.Sort();
+            SortCards();
             for (int i = 1; i < 4; i++)//initial is 1 because the first index values are same
             {
                 var result = player.Cards[i].Value.CompareTo(Cards[i].Value);//Descending
@@ -93,9 +102,9 @@ namespace PokerHand
         {
             get
             {
+                SortCards();
                 if (StraightFlush != 0)
                 {
-                    Cards.Sort();
                     if (Cards.First().Value == 14)
                         return 14;
                 }
@@ -106,9 +115,10 @@ namespace PokerHand
         {
             get
             {
+                SortCards();
                 if (Flush != 0)
                 {
-                    if (Cards.First().Value - Cards.Last().Value == 4)
+                    if (Straight != 0)
                         return Cards.First().Value;
                 }
                 return 0;
@@ -118,9 +128,9 @@ namespace PokerHand
         {
             get
             {
+                SortCards();
                 if (Cards.GroupBy(c => c.Suit).ToList().Count == 1)
                 {
-                    Cards.Sort();
                     return Cards.First().Value;
                 }
                 return 0;
@@ -130,7 +140,17 @@ namespace PokerHand
         {
             get
             {
-                if (Cards.First().Value - Cards.Last().Value == 4)
+                SortCards();
+                var isStraight = true;
+                for (int i = 0; i < Cards.Count - 1; i++)
+                {
+                    if (Cards[i].Value - Cards[i + 1].Value != 1)
+                    {
+                        isStraight = false;
+                        break;
+                    }
+                }
+                if (isStraight)
                     return Cards.First().Value;
                 return 0;
             }
@@ -140,6 +160,7 @@ namespace PokerHand
         {
             get
             {
+                SortCards();
                 return GetNumberOfKind(4);
             }
 
@@ -148,6 +169,7 @@ namespace PokerHand
         {
             get
             {
+                SortCards();
                 return GetNumberOfKind(3);
             }
         }
@@ -155,7 +177,10 @@ namespace PokerHand
         {
             get
             {
+                SortCards();
                 var highPair = GetNumberOfKind(2, out int lowPair);
+                if (lowPair == 0)
+                    return 0;
                 return highPair * 100 + lowPair;
             }
         }
@@ -163,8 +188,10 @@ namespace PokerHand
         {
             get
             {
-                if (ThreeOfKind != 0 && OnePair != 0)
-                    return ThreeOfKind * 100 + OnePair;
+                SortCards();
+                var threeOfKind = GetNumberOfKind(3, out int lowPair);
+                if (threeOfKind != 0 && lowPair != 0)
+                    return threeOfKind * 100 + lowPair;
                 return 0;
             }
         }
@@ -172,6 +199,7 @@ namespace PokerHand
         {
             get
             {
+                SortCards();
                 return GetNumberOfKind(2);
             }
         }
@@ -179,7 +207,7 @@ namespace PokerHand
         {
             get
             {
-                Cards.Sort();
+                SortCards();
                 return Cards.First().Value;//First one is High Card
             }
         }
@@ -190,22 +218,32 @@ namespace PokerHand
         private int GetNumberOfKind(int number, out int lowPair)
         {
             lowPair = 0;
-            var list = from l in Cards
-                       group l.Value by l.Value into g
-                       let count = g.Count()
-                       orderby count descending
-                       select new
-                       {
-                           Count = count,
-                           Value = g.Key
-                       };
-            if (list.ToArray()[1].Value == 2)
+            if (GroupedForNumberOfKind.ToArray()[1].Value == 2)
             {
-                lowPair = list.ToArray()[1].Value;
+                lowPair = GroupedForNumberOfKind.ToArray()[1].Key;
             }
-            if (list.First().Count == number)//First item is highest
-                return list.First().Value;
+            if (GroupedForNumberOfKind.ToList().First().Value == number)//First item is highest
+                return GroupedForNumberOfKind.ToList().First().Key;
             return 0;
+        }
+        private Dictionary<int, int> _groupedForNumberOfKind;
+        public Dictionary<int, int> GroupedForNumberOfKind
+        {
+            get
+            {
+                if (_groupedForNumberOfKind != null)
+                    return _groupedForNumberOfKind;
+                _groupedForNumberOfKind = (from l in Cards
+                                           group l.Value by l.Value into g
+                                           let count = g.Count()
+                                           orderby count descending
+                                           select new
+                                           {
+                                               Count = count,
+                                               Value = g.Key
+                                           }).ToList().ToDictionary(x => x.Value, x => x.Count);
+                return _groupedForNumberOfKind;
+            }
         }
     }
 }
